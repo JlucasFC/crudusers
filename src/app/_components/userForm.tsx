@@ -1,31 +1,31 @@
-"use client"
+"use client";
 
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import axios from "axios"
-import { useState } from "react"
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { useState } from "react";
 
 // Schema Zod
 const userSchema = z.object({
   name: z.string().min(3, "O nome deve ter pelo menos 3 caracteres"),
-  email: z.string().email("E-mail inválido"),
-})
+  email: z.email("E-mail inválido"),
+});
 
 // tipo gerado automaticamente
-type UserFormData = z.infer<typeof userSchema>
+type UserFormData = z.infer<typeof userSchema>;
 
 interface UserFormProps {
   user?: {
-    id: number
-    name: string
-    email: string
-  }
-  onSuccess: () => void
+    id: number;
+    name: string;
+    email: string;
+  };
+  onSuccess: () => void;
 }
 
 export default function UserForm({ user, onSuccess }: UserFormProps) {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -38,26 +38,27 @@ export default function UserForm({ user, onSuccess }: UserFormProps) {
       name: "",
       email: "",
     },
-  })
+  });
+
 
   async function onSubmit(data: UserFormData) {
     try {
-      setLoading(true)
+      setLoading(true);
 
       if (user) {
         // Editar usuário
-        await axios.put(`/api/users/${user.id}`, data)
+        await axios.put(`/api/users/${user.id}`, data);
       } else {
         // Criar usuário
-        await axios.post("/api/users", data)
+        await axios.post("/api/users", data);
       }
 
-      reset()
-      onSuccess()
+      reset();
+      onSuccess();
     } catch (err) {
-      console.error(err)
+      console.error(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -98,5 +99,5 @@ export default function UserForm({ user, onSuccess }: UserFormProps) {
         {loading ? "Salvando..." : user ? "Atualizar" : "Criar Usuário"}
       </button>
     </form>
-  )
+  );
 }

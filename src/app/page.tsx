@@ -1,31 +1,32 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use client"
+"use client";
+import useSWR from "swr";
+import axios from "axios";
+import { useState } from "react";
+import UserForm from "./_components/userForm";
 
-import useSWR from "swr"
-import axios from "axios"
-import { useState } from "react"
-import UserForm from "./_components/userForm"
-
-const fetcher = (url: string) => axios.get(url).then((res) => res.data)
+const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 export default function UsersPage() {
-  const { data: users, mutate } = useSWR("/api/users", fetcher)
-  const [editingUser, setEditingUser] = useState<any | null>(null)
-  const [showForm, setShowForm] = useState(false)
+  const { data: users, mutate } = useSWR("/api/users", fetcher);
+  const [editingUser, setEditingUser] = useState<any | null>(null);
+  const [showForm, setShowForm] = useState(false);
 
   async function deleteUser(id: number) {
-    if (!confirm("Tem certeza que deseja excluir este usuário?")) return
+    if (!confirm("Tem certeza que deseja excluir este usuário?")) return;
 
-    await axios.delete(`/api/users/${id}`)
-    mutate() // Recarrega lista
+    await axios.delete(`/api/users/${id}`);
+    mutate(); // Recarrega lista
   }
 
   function handleSuccess() {
-    mutate()       // Atualiza lista
-    setShowForm(false)
-    setEditingUser(null)
+    mutate(); // Atualiza lista
+    setShowForm(false)>
+    setEditingUser(null);
   }
 
+  
   return (
     <div className="p-10 space-y-10">
       <div className="flex justify-between items-center">
@@ -33,8 +34,8 @@ export default function UsersPage() {
 
         <button
           onClick={() => {
-            setEditingUser(null)
-            setShowForm(true)
+            setEditingUser(null);
+            setShowForm(true);
           }}
           className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
         >
@@ -78,8 +79,8 @@ export default function UsersPage() {
               <td className="p-3 border space-x-3">
                 <button
                   onClick={() => {
-                    setEditingUser(user)
-                    setShowForm(true)
+                    setEditingUser(user);
+                    setShowForm(true);
                   }}
                   className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
                 >
@@ -106,5 +107,5 @@ export default function UsersPage() {
         </tbody>
       </table>
     </div>
-  )
+  );
 }
